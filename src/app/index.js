@@ -1,51 +1,78 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PRAYERS, getCurrentPrayerIndex } from "../data/prayers";
 
+// Work from Step 1 down to Step 5. Save after each step and check the app.
 export default function Prayers() {
-  // GIVEN: a live clock that ticks every 30 seconds, so the highlight can move
-  // on its own as time passes. You don't need to change this part.
+  // The clock is already done. It updates every 30 seconds. Leave it as it is.
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 30 * 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // ── TODO 1 (a little logic) ────────────────────────────────────────────────
-  // Which prayer is happening right now? Use the helper you were given:
+  // The five prayers are already in state. Each one has name, arabic, and time.
+  // Use `prayers` in the steps below. Do not call setPrayers.
+  const [prayers, setPrayers] = useState(PRAYERS);
+
+  // STEP 2 — Which prayer is happening now?
+  // Add this line. It gives you 0, 1, 2, 3, or 4.
   //   const currentIndex = getCurrentPrayerIndex(now);
-  // (It returns a number 0–4 — the index of the current prayer in PRAYERS.)
 
   return (
     <SafeAreaView style={styles.screen} edges={["top"]}>
-      <ScrollView contentContainerStyle={styles.content}>
-        {/* ── TODO 2 (UI) ──────────────────────────────────────────────────────
-            Add a header that shows the CURRENT prayer's name — e.g.
-            PRAYERS[currentIndex].name — in a styled <View> with <Text>. */}
+      {/* STEP 1 — Add style={styles.content} to the View below. */}
+      <View>
+        <Text style={styles.title}>Prayer Times</Text>
+        <Text style={styles.hint}>
+          Some text is missing a style. The list stays empty until you add the prayers.
+        </Text>
 
-        {/* ── TODO 3 (UI + the highlight) ─────────────────────────────────────
-            List all five prayers. Map over PRAYERS, and for each one show its
-            .name and .time (and .arabic if you like) inside a styled row.
-            HIGHLIGHT the current one: when its index === currentIndex, give the
-            row a different style, e.g.:
-              const isCurrent = index === currentIndex;
-              <View style={[styles.row, isCurrent && styles.rowCurrent]}> … </View>
-        */}
-      </ScrollView>
+        {/* STEP 1 — Add style={styles.hint} to the Text below. */}
+        {/* STEP 5 — Then replace the words with prayers[currentIndex].name */}
+        <Text>Current prayer will show here.</Text>
+
+        {/* STEP 3 — Add data to the FlatList below. */}
+        <FlatList
+          renderItem={({ item, index }) => {
+            // item is one prayer. index is its position, from 0 to 4.
+            // STEP 1 — Add style={styles.hint} to the Text below.
+            // STEP 4 — Replace that Text with the prayer name and time.
+            // Use styles.name and styles.time.
+            // When index matches currentIndex, also use styles.rowCurrent.
+            return (
+              <View style={styles.row}>
+                <Text>Show the prayer name and its time here.</Text>
+              </View>
+            );
+          }}
+          keyExtractor={(item) => item.name}
+          contentContainerStyle={styles.list}
+        />
+      </View>
     </SafeAreaView>
   );
 }
 
-// ── TODO 4 (styling) ─────────────────────────────────────────────────────────
-// Fill in the styles to make it look nice. `screen` is done so the app has a
-// background; add styles for your header, rows, text, and the current-row
-// highlight. (Numbers are pixels; names are camelCase, like backgroundColor.)
+// Text colors are started so words show on the dark background.
+// Change rowCurrent so the current prayer stands out.
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "#0b1a16" },
-  content: { padding: 20, gap: 12 },
-  // row: { ... },
-  // rowCurrent: { ... },
-  // name: { ... },
-  // time: { ... },
+  content: { flex: 1, padding: 20, gap: 12 },
+  list: { gap: 12, paddingBottom: 24 },
+  title: { color: "#f4f1e8", fontSize: 28, fontWeight: "700" },
+  hint: { color: "#d5e4dc", fontSize: 16, lineHeight: 22 },
+  row: {
+    backgroundColor: "#132820",
+    borderRadius: 12,
+    padding: 14,
+  },
+  rowCurrent: {
+    backgroundColor: "#1f4d3a",
+    borderColor: "#e6c46e",
+    borderWidth: 1,
+  },
+  name: { color: "#f4f1e8", fontSize: 18, fontWeight: "600" },
+  time: { color: "#e6c46e", fontSize: 16 },
 });

@@ -1,51 +1,69 @@
-# Week 22 — Prayer Times — the five daily prayers (starter)
+# Week 22 — Prayer Times
 
-Your React Native assignment. Build a small app that lists the **five daily prayers** and **highlights the
-current one** as time passes. The data and the navigation are done for you — your job is the **UI** (using
-`<View>` and `<Text>`), the **styles** (`StyleSheet`), and a **little bit of logic** (the highlight).
+Build a small app that lists the five daily prayers and highlights the one happening now.
 
-## Run it
+## 1. Run the app
 
-You need **Node.js** and the free **Expo Go** app on your phone.
+1. Install Node.js on your computer.
+2. Install the free Expo Go app on your phone.
+3. In this folder, run:
 
 ```bash
 npm install
 npx expo start
 ```
 
-Scan the QR code with your phone, or press `w` for a quick web preview. It runs from the first minute —
-you'll see two empty screens, and you'll fill them in.
+4. Scan the QR code with your phone, or press `w` to open it in the browser.
 
-## What's given
+You should see two tabs: **Prayers** and **About**. Each tab already has words on it. Follow the steps in the files.
 
-- `src/data/prayers.js` — the five prayers with their times, **and** a `getCurrentPrayerIndex(now)` helper
-  that tells you which prayer is current. **Don't change this** — just use it.
-- `src/app/_layout.js` — the bottom tabs ("Prayers" and "About"). Done.
+## 2. Already done for you
 
-## Your job — two screens
+Do not change these.
 
-### 1. `src/app/index.js` — the Prayers screen
+- `src/data/prayers.js` — the five prayers, plus `getCurrentPrayerIndex(now)`.
+- `src/app/_layout.js` — the Prayers and About tabs.
+- The clock on the Prayers screen.
+- The prayers list, already saved in state as `prayers`.
 
-Follow the numbered `TODO`s in the file:
+Each prayer has `name`, `arabic`, and `time`.
 
-1. Call `getCurrentPrayerIndex(now)` to get the current prayer's index (the clock/timer is already set up).
-2. Add a **header** that shows the current prayer's name.
-3. **Map** over `PRAYERS` to show all five in styled rows (name + time), and **highlight** the current one
-   (when `index === currentIndex`).
-4. Fill in the **styles** to make it look nice.
+## 3. Prayers screen
 
-### 2. `src/app/about.js` — the About screen
+Open `src/app/index.js`. Do the steps in order. Save and check the app after each one.
 
-A title and a sentence or two about the five prayers — pure `<View>` / `<Text>` / styles.
+1. **Add the missing styles.** The styles are already written at the bottom of the file. You only attach them.
+   - The first `<View>` needs `style={styles.content}`
+   - The “Current prayer” `<Text>` needs `style={styles.hint}`
+   - The `<Text>` inside `renderItem` needs `style={styles.hint}`
+2. **Find the current prayer.** Add `const currentIndex = getCurrentPrayerIndex(now);`
+3. **Give the list its data.** The FlatList does not have its data yet. Use the `prayers` state. Do not use `.map`.
+4. **Finish the row inside `renderItem`.** `item` is one prayer. `index` is its position. Show the name and the time. Use `styles.name` and `styles.time`. When `index` matches `currentIndex`, also use `styles.rowCurrent`.
+5. **Name the current prayer.** Replace “Current prayer will show here.” with `prayers[currentIndex].name`.
 
-## Done when
+You can change a color or a size in the style list if you want. You do not have to.
 
-- All five prayers show, each with its name and time.
-- The current prayer stands out (a different color / a badge) — and it's the *correct* one for the time.
-- The About screen has some content.
-- It looks clean, and there are no errors in the terminal.
+Before Fajr, the current prayer is Isha. That is expected.
 
-## Submit
+## 4. About screen
 
-Push to GitHub and add a **screenshot** of your app running. Then paste your repo link into the submission
-box.
+Open `src/app/about.js`.
+
+1. **Add the missing styles.**
+   - The `<View>` needs `style={styles.content}`
+   - The sentence `<Text>` needs `style={styles.body}`
+2. Replace that sentence with one or two sentences about the five daily prayers.
+
+## 5. Done when
+
+- The Prayers tab lists Fajr, Dhuhr, Asr, Maghrib, and Isha.
+- Each row shows the name and the time.
+- The current prayer looks different from the others, and it matches the time of day.
+- The current prayer’s name also shows at the top.
+- The Views and Texts that were missing a style now have one.
+- The About tab has your own sentences.
+- The terminal has no errors.
+
+## 6. Submit
+
+Push to GitHub and add a screenshot of the app running. Paste your repo link into the submission box.
